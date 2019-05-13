@@ -1,0 +1,5 @@
+# used for storing reference projects
+refs/
+*.jpeg
+*.pyc
+__pycache__/
