@@ -16,3 +16,5 @@ for dataset_path in DATASETS:
         for idx, filename in enumerate(os.listdir(dir_path)):
             if 'png' in filename:
                 os.rename(f'{dir_path}/{filename}', f'{dir_path}/{class_name}_{idx}.png')
+        with open(f'{dir_path}/index', 'w') as index_file:
+            index_file.write(str(idx + 1))
