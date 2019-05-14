@@ -3,4 +3,3 @@ refs/
 *.jpeg
 *.pyc
 __pycache__/
-dataset/
