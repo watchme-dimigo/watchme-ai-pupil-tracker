@@ -1,6 +1,6 @@
 from keras.models import Sequential
 from keras.layers import (
-  Convolution2D,
+  Conv2D,
   MaxPooling2D,
   Flatten,
   Dense
@@ -10,7 +10,7 @@ classifier = Sequential()
 
 # 컨볼루션 레이어
 classifier.add(
-  Convolution2D(32, 3, 3, 
+  Conv2D(32, 3, 3, 
     input_shape=(64, 64, 3),  
     activation='relu')
 )
@@ -25,12 +25,12 @@ classifier.add(Flatten())
 
 # full connection
 classifier.add(Dense(
-  output_dim=128,
-  activation='relu'
+  activation='relu',
+  units=128
 ))
 classifier.add(Dense(
-  output_dim=1,
-  activation='sigmoid'
+  activation='sigmoid',
+  units=1
 ))
 
 # compiling
@@ -44,15 +44,10 @@ classifier.compile(
 
 from keras.preprocessing.image import ImageDataGenerator
 
-train_datagon = ImageDataGenerator(
-  rescale=1./255,
-  shear_range=0.2,
-  zoom_range=0/2,
-  horizontal_flip=False
-)
+train_datagon = ImageDataGenerator()
 
 training_set = train_datagon.flow_from_directory(
-  'dataset',
+  'dataset/train',
   target_size=(64, 64),
   batch_size=32,
   class_mode='binary'

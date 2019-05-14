@@ -1,3 +1,4 @@
+import sys
 from time import sleep
 import cv2
 import numpy as np
@@ -6,7 +7,16 @@ from preprocessor import (
     apply_threshold
 )
 
-CLASS = 'top_left_1'
+ALLOWED_CLASSES = ['normal_0', 'top_left_1', 'top_right_2', 'bottom_left_3', 'bottom_right_4']
+try:
+    CLASS = sys.argv[1]
+except IndexError:
+    print('No CLASS provided; Should be one of the following: {}'.format(str(ALLOWED_CLASSES)))
+    exit(1)
+if CLASS not in ALLOWED_CLASSES:
+    print('Invalid CLASS; Should be one of the following: {}'.format(str(ALLOWED_CLASSES)))
+    exit(1)
+
 DATASET_PATH = './dataset/train/{}/'.format(CLASS)
 
 HAARCASCADE_PATH = '/usr/local/lib/python3.7/site-packages/cv2/data/'
@@ -44,10 +54,9 @@ while(True):
             index = int(index_file.readline())
 
         (x, y, w, h) = eye
-        # print(y+h, face_height*2.5/3)
-        # if y + h > face_height: # 내 콧구멍
+        # if y + h > face_height * 2.5 / 3: # 내 콧구멍
         #     continue
-        # 그냥 수동으로 지워주자
+        # 아오 그냥 수동으로 지워주자
 
         eye = face[y:y+h, x:x+w]
 
