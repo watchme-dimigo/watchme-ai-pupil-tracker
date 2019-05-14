@@ -1,9 +1,13 @@
+from time import sleep
 import cv2
 import numpy as np
 from preprocessor import (
     get_threshold,
     apply_threshold
 )
+
+CLASS = 'top_left_1'
+DATASET_PATH = './dataset/train/{}/'.format(CLASS)
 
 HAARCASCADE_PATH = '/usr/local/lib/python3.7/site-packages/cv2/data/'
 
@@ -24,6 +28,7 @@ while(True):
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     try:
         face = faces[0]
+        print('[*] face detected')
     except IndexError:
         continue
     (x, y, w, h) = face
@@ -33,22 +38,29 @@ while(True):
     eyes = eye_cascade.detectMultiScale(face)
 
     for idx, eye in enumerate(eyes):
-        with open('./dataset/normal/index') as index_file:
+        print('################## process eye ##################')
+
+        with open(DATASET_PATH + 'index') as index_file:
             index = int(index_file.readline())
 
         (x, y, w, h) = eye
-        if y + h > face_height * 2 / 3: # 내 콧구멍
-            continue
+        # print(y+h, face_height*2.5/3)
+        # if y + h > face_height: # 내 콧구멍
+        #     continue
+        # 그냥 수동으로 지워주자
 
         eye = face[y:y+h, x:x+w]
 
         eye = apply_threshold(eye)
 
-        cv2.imshow('eye-{}'.format(idx), eye)
-        cv2.imwrite('dataset/normal/{}.png'.format(idx + index), eye)
-
-        with open('./dataset/normal/index', 'w') as index_file:
+        # cv2.imshow('eye-{}'.format(idx), eye)
+        cv2.imwrite(DATASET_PATH + CLASS + '_{}.png'.format(idx + index), eye)
+        with open(DATASET_PATH + 'index', 'w') as index_file:
             index_file.write(str(idx + index + 1))
+        print(DATASET_PATH + '{}.png'.format(idx + index))
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    # cv2.imshow('frame', frame)
+
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     break
+    sleep(1)

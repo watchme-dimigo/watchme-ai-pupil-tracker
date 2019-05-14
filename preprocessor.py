@@ -1,7 +1,7 @@
 import cv2
 from PIL import Image
 
-def get_threshold(img):
+def _get_threshold_by_mid(img):
     lightest = 0
     darkest = 255
     im = Image.fromarray(img)
@@ -15,6 +15,19 @@ def get_threshold(img):
             elif color < darkest:
                 darkest = color
     return (lightest + darkest) / 2
+
+def _get_threshold_by_most_common(img):
+    im = Image.fromarray(img)
+    pixels = im.load()
+    colors = []
+    for y in range(im.size[0]):
+        for x in range(im.size[1]):
+            colors.append(pixels[y, x])
+    return max(set(colors), key=colors.count)
+
+def get_threshold(img):
+    # return _get_threshold_by_most_common(img)
+    return _get_threshold_by_mid(img)
 
 def apply_threshold(img):
     threshold = get_threshold(img)

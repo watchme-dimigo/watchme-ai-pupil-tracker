@@ -1,5 +1,14 @@
+# mac
+.DS_Store
+
+# dev
+.vscode/
+
 # used for storing reference projects
 refs/
+
 *.jpeg
+
+# python
 *.pyc
 __pycache__/
