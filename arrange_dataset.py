@@ -2,6 +2,7 @@ import os
 
 DATASETS = [
     './dataset/train/',
+    './dataset/test/',
 ]
 CLASSES = [
     'normal_0',

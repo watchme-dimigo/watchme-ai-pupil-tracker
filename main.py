@@ -1,3 +1,4 @@
+from keras.callbacks import ModelCheckpoint
 from keras.models import Sequential
 from keras.layers import (
   Conv2D,
@@ -30,6 +31,14 @@ classifier.add(Dense(
 ))
 classifier.add(Dense(
   activation='sigmoid',
+  units=64
+))
+classifier.add(Dense(
+  activation='sigmoid',
+  units=32
+))
+classifier.add(Dense(
+  activation='sigmoid',
   units=1
 ))
 
@@ -44,7 +53,8 @@ classifier.compile(
 
 from keras.preprocessing.image import ImageDataGenerator
 
-train_datagon = ImageDataGenerator()
+train_datagon = ImageDataGenerator(rescale=1./255)
+test_datagon = ImageDataGenerator(rescale=1./255)
 
 training_set = train_datagon.flow_from_directory(
   'dataset/train',
@@ -53,13 +63,20 @@ training_set = train_datagon.flow_from_directory(
   class_mode='binary'
 )
 
-from IPython.display import display
-from PIL import Image
+test_set = test_datagon.flow_from_directory(
+  'dataset/test',
+  target_size=(64, 64),
+  batch_size=32,
+  class_mode='binary'
+)
 
 classifier.fit_generator(
   training_set,
-  steps_per_epoch=100,
+  steps_per_epoch=150,
   epochs=10,
-  validation_data=training_set, # change this after test set is made
-  validation_steps=800
+  validation_data=test_set,
+  validation_steps=200,
+  callbacks=[
+    ModelCheckpoint('./model.h5', monitor='val_loss', save_best_only=False)
+  ]
 )

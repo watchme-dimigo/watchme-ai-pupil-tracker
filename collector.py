@@ -17,7 +17,14 @@ if CLASS not in ALLOWED_CLASSES:
     print('Invalid CLASS; Should be one of the following: {}'.format(str(ALLOWED_CLASSES)))
     exit(1)
 
-DATASET_PATH = './dataset/train/{}/'.format(CLASS)
+try:
+    TYPE = sys.argv[2]
+    if TYPE not in ['train', 'test']:
+        print("Invalid TYPE; Should be one of the following(default 'train'): {}".format(str(['train', 'test'])))
+except IndexError:
+    TYPE = 'train'
+
+DATASET_PATH = f'./dataset/{TYPE}/{CLASS}/'
 
 HAARCASCADE_PATH = '/usr/local/lib/python3.7/site-packages/cv2/data/'
 

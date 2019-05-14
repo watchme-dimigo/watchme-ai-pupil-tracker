@@ -1,3 +1,6 @@
+# models
+*.h5
+
 # mac
 .DS_Store
 
