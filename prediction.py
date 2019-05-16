@@ -16,7 +16,6 @@ def prediction(img_path, model_path='./model.h5'):
     return result
 
 if __name__ == '__main__':
-    for i in range(1, 5):
-      res = prediction(f'./test{i}.png')
-      print(res)
+    res = prediction(f'./test.png')
+    print(res)
   

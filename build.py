@@ -25,6 +25,7 @@ classifier.add(
 
 classifier.add(
   MaxPooling2D(pool_size=(2, 2))
+
 )
 
 classifier.add(Flatten())
@@ -48,7 +49,7 @@ classifier.add(Dense(
 ))
 classifier.add(Dense(
   activation='softmax',
-  units=4
+  units=5
 ))
 
 classifier.compile(
