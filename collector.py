@@ -43,39 +43,35 @@ while(True):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-    try:
-        face = faces[0]
+    if len(faces):
         print('[*] face detected')
-    except IndexError:
-        continue
-    (x, y, w, h) = face
-    face = gray[y:y+h, x:x+w]
-    face_height = np.size(face, 0)
+    for face in faces:
+        (x, y, w, h) = face
+        face = gray[y:y+h, x:x+w]
+        face_height = np.size(face, 0)
 
-    eyes = eye_cascade.detectMultiScale(face)
+        eyes = eye_cascade.detectMultiScale(face)
 
-    for idx, eye in enumerate(eyes):
-        print('################## process eye ##################')
+        for idx, eye in enumerate(eyes):
+            print('################## process eye ##################')
 
-        with open(DATASET_PATH + 'index') as index_file:
-            index = int(index_file.readline())
+            with open(DATASET_PATH + 'index') as index_file:
+                index = int(index_file.readline())
 
-        (x, y, w, h) = eye
-        # if y + h > face_height * 2.5 / 3: # 내 콧구멍
-        #     continue
-        # 아오 그냥 수동으로 지워주자
+            (x, y, w, h) = eye
+            # if y + h > face_height * 2.5 / 3: # 내 콧구멍
+            #     continue
+            # 아오 그냥 수동으로 지워주자
 
-        eye = face[y:y+h, x:x+w]
+            eye = face[y:y+h, x:x+w]
 
-        eye = apply_threshold(eye)
+            eye = apply_threshold(eye)
 
-        # cv2.imshow('eye-{}'.format(idx), eye)
-        cv2.imwrite(DATASET_PATH + CLASS + '_{}.png'.format(idx + index), eye)
-        with open(DATASET_PATH + 'index', 'w') as index_file:
-            index_file.write(str(idx + index + 1))
-        print(DATASET_PATH + '{}.png'.format(idx + index))
-
-    # cv2.imshow('frame', frame)
+            # cv2.imshow('eye-{}'.format(idx), eye)
+            cv2.imwrite(DATASET_PATH + CLASS + '_{}.png'.format(idx + index), eye)
+            with open(DATASET_PATH + 'index', 'w') as index_file:
+                index_file.write(str(idx + index + 1))
+            print(DATASET_PATH + '{}.png'.format(idx + index))
 
     # if cv2.waitKey(1) & 0xFF == ord('q'):
     #     break

@@ -7,7 +7,8 @@ DATASETS = [
 CLASSES = [
     'normal_0',
     'top_left_1',
-    'top_right_2'
+    'top_right_2',
+    'bottom_left_3'
 ]
 for dataset_path in DATASETS:
     for class_name in CLASSES:
