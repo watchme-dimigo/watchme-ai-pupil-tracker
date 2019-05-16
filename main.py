@@ -11,17 +11,11 @@ from keras.preprocessing.image import ImageDataGenerator
 
 classifier = Sequential()
 
-# 컨볼루션 레이어
 classifier.add(
   Conv2D(32, (3, 3),
     input_shape=(64, 64, 3),
     activation='relu')
 )
-
-# # 풀링 레이어
-# classifier.add(
-#   MaxPooling2D(pool_size=(2, 2))
-# )
 
 classifier.add(
   Conv2D(64, (2, 2),
@@ -33,19 +27,13 @@ classifier.add(
   MaxPooling2D(pool_size=(2, 2))
 )
 
-# 플래튼 레이어
 classifier.add(Flatten())
 
-# full connection
 classifier.add(Dense(
   activation='relu',
   units=128,
   kernel_initializer=RandomUniform(minval=0.0, maxval=0.0001)
 ))
-# classifier.add(Dense(
-#   activation='relu',
-#   units=112
-# ))
 classifier.add(Dense(
   activation='sigmoid',
   units=96
@@ -63,7 +51,6 @@ classifier.add(Dense(
   units=4
 ))
 
-# compiling
 classifier.compile(
   optimizer='adam',
   loss='categorical_crossentropy',
@@ -72,7 +59,11 @@ classifier.compile(
   ]
 )
 
-train_datagon = ImageDataGenerator(rescale=1./255)
+train_datagon = ImageDataGenerator(
+  rescale=1./255,
+  width_shift_range=0.05,
+  height_shift_range=0.05
+)
 test_datagon = ImageDataGenerator(rescale=1./255)
 
 training_set = train_datagon.flow_from_directory(
@@ -99,3 +90,9 @@ classifier.fit_generator(
     ModelCheckpoint('./model.h5', monitor='val_loss', save_best_only=False)
   ]
 )
+
+scores = classifier.evaluate_generator(test_set, steps=5)
+print('%s: %.2f%%' % (
+    classifier.metrics_names[1], 
+    scores[1] * 100
+))
