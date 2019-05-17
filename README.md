@@ -27,7 +27,8 @@ model = load_model('./model.h5')
 img = image.load_img(img_path, target_size=(64, 64))
 img = np.expand_dims(image.img_to_array(img), axis=0)
 
-result = model.predict(img)
+result = model.predict_classes(img)
+print(['bottom_left', 'bottom_right', 'normal', 'top_left', 'top_right'][result[0]])
 ```
 
-이걸 좀 고치고 result 가지고 [watchme-closed-eye-detection](https://github.com/junhoyeo/watchme-closed-eye-detection) 얘랑 합쳐서 사용자 눈 감김 여부와 함께 포지션을 parent process로 보내주면 될 것임(`model.predict_classes` 쓰면 편할 듯)
+이걸 좀 고치고 result 가지고 [watchme-closed-eye-detection](https://github.com/junhoyeo/watchme-closed-eye-detection) 얘랑 합쳐서 사용자 눈 감김 여부와 함께 포지션을 parent process로 보내주면 될 것임
