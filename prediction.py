@@ -10,7 +10,9 @@ def prediction(img_path, model_path='./model.h5'):
 
     img = image.load_img(img_path, target_size=(64, 64))
     img = np.expand_dims(image.img_to_array(img), axis=0)
-    # print(img)
+    print(img)
+    print(type(img))
+    print(img.shape)
 
     result = model.predict_classes(img)
     return ['bottom_left', 'bottom_right', 'normal', 'top_left', 'top_right'][result[0]]
