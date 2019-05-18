@@ -25,7 +25,6 @@ classifier.add(
 
 classifier.add(
   MaxPooling2D(pool_size=(2, 2))
-
 )
 
 classifier.add(Flatten())
@@ -73,6 +72,8 @@ training_set = train_datagon.flow_from_directory(
   batch_size=32,
   class_mode='categorical'
 )
+
+print(training_set.class_indices)
 
 test_set = test_datagon.flow_from_directory(
   'dataset/test',

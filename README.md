@@ -1,5 +1,5 @@
 # Watchme AI-Pupil-Tracker
-<img src="./position.png" alt="categories" width="70%"/>
+![model](./model.png)
 
 ## Scripts
 
@@ -16,6 +16,8 @@ Contains methods for data preprocessing
 Builds, trains, and saves the model
 
 ## Example
+<img src="./position.png" alt="categories" width="70%"/>
+
 ```py
 from preprocessor import apply_threshold
 import numpy as np
